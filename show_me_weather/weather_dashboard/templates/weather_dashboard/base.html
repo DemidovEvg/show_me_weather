@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'weather_dashboard/css/bootstrap.min.css' %}">
+    <script src="{% static 'weather_dashboard/js/bootstrap/bootstrap.bundle.min.js' %}"></script>
+    {% load static %}
+    <title>
+        {% block title %}
+        {{ title }}
+        {% endblock title %}
+    </title>
+    {% block head %}
+    {% endblock head %}
+</head>
+
+<body class="min-vh-100 d-flex">
+    <div class="outter_container d-flex flex-column min-vh-100 flex-grow-1">
+        <div class="mt-4">
+            <h1 class="text-center">{{ title }}</h1>
+        </div>
+
+        <div class="container d-flex flex-column h-100 px-0 position-relative">
+            <div class="content  d-flex flex-column" style="flex: 1 0 auto">
+                {% block content %}
+                {% endblock content %}
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

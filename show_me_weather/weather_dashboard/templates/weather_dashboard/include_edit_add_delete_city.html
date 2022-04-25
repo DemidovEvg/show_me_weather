@@ -1,0 +1,64 @@
+{% load static %}
+<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="CityModal" tabindex="-1"
+    aria-labelledby="CityModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="CityModalLabel">Добавить новый город</h5>
+                <a href="{% url 'weather_list' %}">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </a>
+            </div>
+            <div class="modal-body">
+                <form id="form_city" method="post" class="" action="{% url 'city_create' %}">
+                    {% csrf_token %}
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger mt-3" role="alert">{{ form.non_field_errors }}</div>
+                    {% endif %}
+
+                    <div class="mb-3 max-width-300px">
+                        <label for="{{ form.name.id_for_label }}" class="form-label">
+                            {{ form.name.label }}
+                        </label>
+                        {{ form.name }}
+
+                        {% if form.name.errors %}
+                        <div class="alert alert-danger mt-3" role="alert">
+                            {{ form.name.errors }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <button id="citySubmit" type="submit" class="btn btn-primary">Добавить</button>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <a href="{% url 'weather_list' %}">
+                    <button id="closeCityModal" type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Закрыть
+                    </button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="{% static 'weather_dashboard/js/edit_city.js' %}">
+</script>
+<script src="{% static 'weather_dashboard/js/add_city.js' %}">
+</script>
+<script src="{% static 'weather_dashboard/js/delete_city.js' %}">
+</script>
+
+{% if form.name.errors or form.non_field_errors %}
+<form_error id="form_error_city" data-city-edit-url="{{ city_edit_url }}" data-city-edit-value="{{ city_edit_value }}">
+</form_error>
+<script>
+    var cityModal = new bootstrap.Modal(document.getElementById('CityModal'));
+    cityModal.show();
+    let cityEditUrl = document.querySelector('#form_error_city').dataset.cityEditUrl;
+    let cityEditValue = document.querySelector('#form_error_city').dataset.cityEditValue;
+    syncCityModal(cityEditUrl, cityEditValue);
+</script>
+{% endif %}
