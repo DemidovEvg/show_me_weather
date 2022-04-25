@@ -176,7 +176,6 @@ NODE_MODULES_ROOT = BASE_DIR.parent / 'node_modules'
 
 
 # ====== Для django-compressor =============
-# COMPRESS_OFFLINE = env.bool('COMPRESS_OFFLINE')
 
 INSTALLED_APPS += [
     'compressor',
@@ -199,4 +198,3 @@ COMPRESS_PRECOMPILERS = (
     ('module', 'compressor_toolkit.precompilers.ES6Compiler'),
     ('css', 'compressor_toolkit.precompilers.SCSSCompiler'),
 )
-# COMPRESS_ENABLED = True

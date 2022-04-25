@@ -87,7 +87,7 @@ class WheatherCommonView(TemplateResponseMixin, View, SearchEngineMixin):
 
         context['form_city'] = CityForm()
 
-        paginator = Paginator(weather_list, 20)
+        paginator = Paginator(weather_list, 15)
 
         cur_page_number = self.request.GET.get('page')
 
