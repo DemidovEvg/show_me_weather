@@ -1,12 +1,13 @@
-Установка python зависимостей:
+- Установка python зависимостей:
 pip install -r requirements.txt
 
-Установить none js:
-https://nodejs.org/ru/download/
+- Установить node js + npm
 
-Установка js зависимостей:
+- Установка js зависимостей:
 В директории с файлом package-lock.json вызвать команду:
 npm install
+При этом создастся папка node_modules с зависимости
 
-Сборка статических файлов:
-python3/py manage.py collecstatic
+- Сборка статических файлов:
+python manage.py collecstatic 
+При этом берутся статика из папки приложения + зависимости из node_modules чере django_node_assets

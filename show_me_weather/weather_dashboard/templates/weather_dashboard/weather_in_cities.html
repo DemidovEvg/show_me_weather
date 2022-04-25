@@ -1,5 +1,6 @@
 {% extends 'weather_dashboard/base.html' %}
 {% load pagination_tag %}
+{% load compress %}
 
 {% block title %}
 {{ block.super }}
@@ -201,11 +202,6 @@
     </div>
 </div>
 
-<script src="{% static 'weather_dashboard/js/chart.js/dist/Chart.js' %}"></script>
-<script src="{% static 'weather_dashboard/js/chartjs-adapter-moment/dist/chartjs-adapter-moment.js' %}"></script>
-<script
-    src="{% static 'weather_dashboard/js/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js' %}"></script>
-
 <div class="container d-flex justify-content-center" id="chart">
     <canvas id="myChart" width="200" height="100"></canvas>
 </div>
@@ -250,7 +246,18 @@
     window.addEventListener('resize', checkWinSizeForChart);
 </script>
 
-<script type="module" src="{% static 'weather_dashboard/js/graphics.js' %}"></script>
+
+
+{% compress js %}
+<script src="{% static 'chart.js/dist/chart.js' %}"></script>
+<script src="{% static 'chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js' %}"></script>
+<script src="{% static 'weather_dashboard/js/graphics.js' %}"></script>
+<script src="{% static 'chartjs-adapter-moment/dist/chartjs-adapter-moment.js' %}"></script>
+{% endcompress %}
+
+
+
+
 
 {% endif %}
 {% endblock content %}

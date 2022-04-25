@@ -1,4 +1,5 @@
 {% load static %}
+{% load compress %}
 <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="WeatherModal" tabindex="-1"
     aria-labelledby="WeatherModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -110,13 +111,12 @@
 </div>
 
 
-
+{% compress js %}
 <script src="{% static 'weather_dashboard/js/edit_weather.js' %}">
-</script>
-<script src="{% static 'weather_dashboard/js/add_weather.js' %}">
 </script>
 <script src="{% static 'weather_dashboard/js/delete_weather.js' %}">
 </script>
+{% endcompress %}
 
 {% if form.name.errors or form.non_field_errors %}
 <form_error id="form_error_weather" data-weather-edit-url="{{ weather_edit_url }}">

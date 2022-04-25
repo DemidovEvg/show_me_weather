@@ -1,17 +1,22 @@
 from pathlib import Path
 import mimetypes
+from environs import Env
+
+
+env = Env()
+env.read_env()
 
 mimetypes.add_type("application/javascript", ".js", True)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-mr^rk$k^9@cpzt8^h-8o53qh^9i3wudiw$!mq_ga!z&%ys%bvx'
+SECRET_KEY = env.str('SECRET_KEY')
 
-DEBUG = True
+DEBUG = env.bool('DEBUG')
 
-INTERNAL_IPS = [
-    "127.0.0.1",
-]
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS')
+
+INTERNAL_IPS = []
 
 
 INSTALLED_APPS = [
@@ -23,7 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'weather_dashboard.apps.WeatherDashboardConfig',
     'rest_framework',
-    'django_filters'
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -96,10 +101,102 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR.parent / 'static'
 STATICFILES_DIRS = [
-    BASE_DIR.parent / 'node_modules'
 ]
 
 
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
+
+
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]
+
+
+LOGGING = {
+    'version': 1,
+
+    'disable_existing_loggers': False,
+
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {asctime} {message}',
+            'style': '{',
+        },
+    },
+
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose'
+        },
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR/'logs/debug.log',
+            'formatter': 'simple'
+        },
+    },
+
+    'loggers': {
+
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'filters': []
+        },
+        'demidovsite': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'filters': [],
+            'propagate': False,
+        }
+    }
+}
+
+# ====== Для django_node_assets =============
+INSTALLED_APPS += [
+    'django_node_assets',
+]
+
+
+STATICFILES_FINDERS += [
+    'django_node_assets.finders.NodeModulesFinder',
+]
+
+NODE_PACKAGE_JSON = BASE_DIR.parent / 'package.json'
+NODE_MODULES_ROOT = BASE_DIR.parent / 'node_modules'
+
+
+# ====== Для django-compressor =============
+# COMPRESS_OFFLINE = env.bool('COMPRESS_OFFLINE')
+
+INSTALLED_APPS += [
+    'compressor',
+    'compressor_toolkit',
+]
+
+
+STATICFILES_FINDERS += [
+    'compressor.finders.CompressorFinder',
+]
+
+COMPRESS_CSS_FILTERS = [
+    'compressor.filters.css_default.CssAbsoluteFilter',
+    'compressor.filters.cssmin.CSSMinFilter',
+]
+COMPRESS_JS_FILTERS = [
+    'compressor.filters.jsmin.JSMinFilter',
+]
+COMPRESS_PRECOMPILERS = (
+    ('module', 'compressor_toolkit.precompilers.ES6Compiler'),
+    ('css', 'compressor_toolkit.precompilers.SCSSCompiler'),
+)
+# COMPRESS_ENABLED = True
